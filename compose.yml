@@ -1,0 +1,24 @@
+services:
+  hugo-nsde:
+    build:
+      context: ./src/.
+      tags:
+        - ghcr.io/handtrixx/hugo_nsde:latest
+    hostname: hugo-nsde
+    container_name: hugo-nsde
+    restart: unless-stopped
+    volumes:
+      - ../content:/hugo/content
+      - ./theme:/hugo/themes/theme
+      - ./hugo.toml:/hugo/hugo.toml
+    environment:
+      - ENVIRONMENT=development
+      - URL=https://niklas-stephan.de
+    ports:
+      - "1313:1313"
+
+# Build the image
+#docker build -t ghcr.io/handtrixx/hugo_nsde:latest ./src
+
+# Or using docker-compose
+#docker compose build
