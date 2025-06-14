@@ -9,8 +9,8 @@ services:
     restart: unless-stopped
     volumes:
       - ../content:/hugo/content
-      - ./theme:/hugo/themes/theme
-      - ./hugo.toml:/hugo/hugo.toml
+      - ./src/theme:/hugo/themes/theme
+      - ./src/hugo.toml:/hugo/hugo.toml
     environment:
       - ENVIRONMENT=development
       - URL=https://niklas-stephan.de
