@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     selector: headline.tagName.toLowerCase(),
     element: headline // Store reference to the actual element
   }));
-  
+
   //add items as li childs to item with id: "content-index-list"
   const contentIndexList = document.getElementById('content-index-list');
   headlines.forEach(headline => {
@@ -31,23 +31,23 @@ document.addEventListener('DOMContentLoaded', function () {
     //get closest headline to current scroll position
     const scrollPosition = window.scrollY + 100; // Add offset for better UX
     let currentHeadline = null;
-    
+
     // Find the headline that's currently in view
     for (let i = headlines.length - 1; i >= 0; i--) {
       const headline = headlines[i];
       const headlineElement = headline.element;
       const headlineTop = headlineElement.offsetTop;
-      
+
       if (scrollPosition >= headlineTop) {
         currentHeadline = headline;
         break;
       }
     }
-    
+
     // Remove active class from all items
     const allItems = contentIndexList.querySelectorAll('.content-index-item');
     allItems.forEach(item => item.classList.remove('active'));
-    
+
     // Add active class to current item
     if (currentHeadline) {
       const activeItem = contentIndexList.querySelector(`[data-target="${currentHeadline.id}"]`);
@@ -58,8 +58,48 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// ... rest of code remains same
 
+
+document.addEventListener('DOMContentLoaded', function () {
+  const codeBlocks = document.querySelectorAll('.highlight pre code');
+
+  codeBlocks.forEach(codeBlock => {
+    const button = document.createElement('button');
+    button.className = 'copy-btn';
+    button.innerText = 'Copy';
+
+    const pre = codeBlock.parentElement;
+    pre.insertBefore(button, pre.firstChild);
+
+    button.addEventListener('click', function () {
+      // Get all line spans (each line is wrapped in a span with display:flex)
+      const lineSpans = codeBlock.querySelectorAll('span[style*="display:flex"]');
+
+      let codeText = '';
+      lineSpans.forEach(lineSpan => {
+        // Within each line span, get the second span (the actual code content)
+        // The first span contains the line number with user-select:none
+        const contentSpans = lineSpan.querySelectorAll('span');
+        if (contentSpans.length >= 2) {
+          // Skip the first span (line number) and get text from the second span
+          codeText += contentSpans[1].textContent + '\n';
+        }
+      });
+
+      // Remove the last newline character
+      codeText = codeText.slice(0, -1);
+
+      navigator.clipboard.writeText(codeText).then(() => {
+        this.innerText = 'kopiert!';
+        setTimeout(() => {
+          this.innerText = 'Kopieren';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    });
+  });
+});
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -81,7 +121,7 @@ if (postContent) {
   postContent.querySelectorAll('a:not([target])').forEach(link => {
     link.setAttribute('target', '_blank');
   });
-  
+
   // Get all images within post-content and make them clickable links
   postContent.querySelectorAll('img').forEach(img => {
     const link = document.createElement('a');
