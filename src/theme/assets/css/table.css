@@ -1,6 +1,7 @@
 
 table {
-    width: 100%;
+    max-width: 100%;
+    width: fit-content;
     margin-bottom: 12px;
     border-collapse: collapse;
     color: var(--color-darker);
