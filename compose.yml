@@ -22,3 +22,7 @@ services:
 
 # Or using docker-compose
 #docker compose build
+
+# Push the built image
+#docker login ghcr.io -u handtrixx
+#docker push ghcr.io/handtrixx/hugo_nsde:latest
